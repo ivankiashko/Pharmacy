@@ -63,6 +63,19 @@ async def add_to_cart(user_id: int, drug_key: str, qty: int = 1, path: str = DB_
         await db.execute("UPDATE cart SET quantity = quantity + ? WHERE user_id = ? AND drug_key = ?", (qty, user_id, drug_key))
         await db.commit()
 
+async def remove_from_cart(user_id: int, drug_key: str, qty: int = 1, path: str = DB_PATH):
+    """Decrease quantity of a product in cart or remove it completely."""
+    async with aiosqlite.connect(path) as db:
+        await db.execute(
+            "UPDATE cart SET quantity = quantity - ? WHERE user_id = ? AND drug_key = ?",
+            (qty, user_id, drug_key),
+        )
+        await db.execute(
+            "DELETE FROM cart WHERE user_id = ? AND drug_key = ? AND quantity <= 0",
+            (user_id, drug_key),
+        )
+        await db.commit()
+
 async def clear_cart(user_id: int, path: str = DB_PATH):
     async with aiosqlite.connect(path) as db:
         await db.execute("DELETE FROM cart WHERE user_id = ?", (user_id,))
@@ -102,3 +115,10 @@ async def export_orders(path: str = DB_PATH, dest: str = "orders.csv") -> str:
         for row in rows:
             writer.writerow([row["id"], row["user_id"], row["items"], row["total"], row["fio"], row["address"], row["created_at"]])
     return dest
+
+async def list_users(path: str = DB_PATH) -> List[int]:
+    """Return list of all user IDs"""
+    async with aiosqlite.connect(path) as db:
+        async with db.execute("SELECT user_id FROM users") as cursor:
+            rows = await cursor.fetchall()
+            return [r[0] for r in rows]
