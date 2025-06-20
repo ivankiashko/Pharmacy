@@ -1,9 +1,11 @@
 import aiosqlite
+import os
 from datetime import datetime
 from typing import List, Tuple, Optional
 import json
 
-DB_PATH = "bot.db"
+# Default database path, can be overridden via the DB_PATH environment variable
+DB_PATH = os.getenv("DB_PATH", "bot.db")
 
 async def init_db(path: str = DB_PATH):
     async with aiosqlite.connect(path) as db:
