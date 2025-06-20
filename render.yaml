@@ -8,5 +8,7 @@ services:
     envVars:
       - key: BOT_TOKEN
         value: 8153227319:AAGKBVH5TS-pkqXwY6y3DMK-u50_GBoZ5kA
-      - key: ADMIN_ID
+      - key: ADMIN_IDS
         value: 1857844289
+      - key: DB_PATH
+        value: bot.db
