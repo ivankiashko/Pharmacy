@@ -1,0 +1,19 @@
+# Python cache and artifacts
+__pycache__/
+*.py[cod]
+*.so
+
+# Environment files
+.env
+.env.*
+*.env
+
+# Databases
+*.db
+
+# Virtual environments
+venv/
+.venv/
+
+# Logs
+*.log
