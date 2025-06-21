@@ -7,8 +7,8 @@ services:
     startCommand: python bot.py
     envVars:
       - key: BOT_TOKEN
-        value: 8052020403:AAGViRAGSm1qpZw_-hnNYy8bnXjRZFRdYnc
+        value: <your-bot-token>
       - key: ADMIN_IDS
-        value: 1857844289
+        value: <admin-id>
       - key: DB_PATH
         value: bot.db

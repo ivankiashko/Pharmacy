@@ -14,7 +14,7 @@
    source venv/bin/activate
    pip install -r requirements.txt
    ```
-2. Скопируйте файл `.env.example` в `.env` и заполните значения:
+2. Скопируйте файл `.env.example` в `.env` и подставьте свои значения вместо плейсхолдеров:
    - `BOT_TOKEN` – токен вашего бота
    - `ADMIN_IDS` – список ID администраторов через запятую
    - `DB_PATH` – путь к базе (опционально)
