@@ -1,6 +1,6 @@
 # Pharmacy Telegram Bot
 
-Телеграм-бот аптеки на базе `aiogram`.
+Телеграм-бот аптеки на базе библиотеки `pyTelegramBotAPI`.
 
 ## Требования
 - Python 3.10+
