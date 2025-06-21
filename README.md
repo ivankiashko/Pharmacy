@@ -23,6 +23,8 @@
    ```bash
    python bot.py
    ```
+   Если при запуске возникает ошибка вида `TypeError: 'NoneType' object is not`
+   `iterable`, убедитесь, что в файле `.env` указана переменная `BOT_TOKEN`.
 
 ## Deploy на Render
 На сервисе [Render](https://render.com) создайте новый **Web Service** из репозитория.

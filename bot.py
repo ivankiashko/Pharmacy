@@ -17,6 +17,12 @@ DB_PATH = os.getenv("DB_PATH", db.DB_PATH)
 
 logging.basicConfig(level=logging.INFO)
 
+if not BOT_TOKEN:
+    raise RuntimeError(
+        "BOT_TOKEN is not set. Create a .env file based on .env.example and "
+        "specify your Telegram bot token."
+    )
+
 bot = telebot.TeleBot(BOT_TOKEN, parse_mode="HTML")
 
 
