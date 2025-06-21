@@ -1,7 +1,7 @@
 import sqlite3
 import json
 from datetime import datetime
-from typing import List, Tuple, Optional, Dict
+from typing import List, Tuple, Dict
 
 
 DB_PATH = "bot.db"
@@ -159,4 +159,3 @@ def list_users(path: str = DB_PATH) -> List[int]:
     with _connect(path) as db:
         cur = db.execute("SELECT user_id FROM users")
         return [r[0] for r in cur.fetchall()]
-

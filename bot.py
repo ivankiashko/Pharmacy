@@ -1,8 +1,6 @@
 import os
-import sqlite3
 import logging
-from datetime import datetime
-from typing import Dict, Tuple, List
+from typing import Dict
 
 from dotenv import load_dotenv
 import telebot
@@ -350,4 +348,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
