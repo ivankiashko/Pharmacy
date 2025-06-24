@@ -15,7 +15,7 @@
    pip install -r requirements.txt
    ```
 2. Скопируйте файл `.env.example` в `.env` и подставьте свои значения вместо плейсхолдеров:
-   - `BOT_TOKEN` – токен вашего бота
+   - `BOT_TOKEN` – токен вашего бота (должен содержать двоеточие)
    - `ADMIN_IDS` – список ID администраторов через запятую
    - `DB_PATH` – путь к базе (опционально)
    
@@ -25,8 +25,8 @@
    ```bash
    python bot.py
    ```
-   Если при запуске возникает ошибка вида `TypeError: 'NoneType' object is not`
-   `iterable`, убедитесь, что в файле `.env` указана переменная `BOT_TOKEN`.
+   Если при запуске возникает ошибка вида `TypeError: 'NoneType' object is not iterable`,
+   убедитесь, что в файле `.env` указана переменная `BOT_TOKEN`.
 
 ## Deploy на Render
 На сервисе [Render](https://render.com) создайте новый **Web Service** из репозитория.
