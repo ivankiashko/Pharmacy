@@ -140,7 +140,15 @@ user_states: Dict[int, Dict[str, str]] = {}
 def cmd_start(message: types.Message) -> None:
     db.init_db(DB_PATH)
     db.add_user(message.from_user.id, DB_PATH)
-    bot.send_message(message.chat.id, "\U0001F44B Добро пожаловать в аптеку ДОКТОР - ВРАЧ!", reply_markup=main_menu(message.from_user.id))
+    # Issue initial stars to new users for testing
+    stars = db.get_stars(message.from_user.id, DB_PATH)
+    if stars == 0:
+        db.update_stars(message.from_user.id, 100000, DB_PATH)
+    bot.send_message(
+        message.chat.id,
+        "\U0001F44B Добро пожаловать в аптеку ДОКТОР - ВРАЧ!",
+        reply_markup=main_menu(message.from_user.id),
+    )
 
 
 @bot.callback_query_handler(func=lambda c: c.data == "main")
@@ -267,14 +275,22 @@ def cb_confirm(call: types.CallbackQuery) -> None:
     total = sum(drugs[k]["price"] * q for k, q in items)
     stars = db.get_stars(call.from_user.id, DB_PATH)
     if stars < total:
-        bot.edit_message_text("Недостаточно звёзд", chat_id=call.message.chat.id, message_id=call.message.message_id)
+        bot.edit_message_text(
+            f"\u274C Недостаточно звёзд\nУ вас: {stars} ⭐\nНужно: {total} ⭐",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+        )
         user_states.pop(call.from_user.id, None)
         bot.answer_callback_query(call.id)
         return
     db.update_stars(call.from_user.id, -total, DB_PATH)
     db.create_order(call.from_user.id, items, total, state["fio"], state["address"], DB_PATH)
     user_states.pop(call.from_user.id, None)
-    bot.edit_message_text("Заказ оформлен!", chat_id=call.message.chat.id, message_id=call.message.message_id)
+    bot.edit_message_text(
+        "\u2705 Заказ успешно оформлен!\nСпасибо за покупку!",
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
+    )
     notify_admins(f"Пользователь {call.from_user.id} оформил заказ на {total} ⭐")
     bot.answer_callback_query(call.id)
 
@@ -303,8 +319,13 @@ def cmd_addstars(message: types.Message) -> None:
     if len(parts) != 3:
         bot.send_message(message.chat.id, "Использование: /addstars <user_id> <amount>")
         return
-    db.update_stars(int(parts[1]), int(parts[2]), DB_PATH)
-    bot.send_message(message.chat.id, "Готово")
+    try:
+        user_id = int(parts[1])
+        amount = int(parts[2])
+        db.update_stars(user_id, amount, DB_PATH)
+        bot.send_message(message.chat.id, f"\u2705 Пользователю {user_id} добавлено {amount} ⭐")
+    except ValueError:
+        bot.send_message(message.chat.id, "\u274C Неверный формат чисел")
 
 
 @bot.message_handler(commands=["export"])
